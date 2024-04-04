@@ -10,7 +10,7 @@ const app = server.listen(port, (err) => {
     logger.info(`Server runs at port ${port} in ${env} environment`);
   }
 });
-// tes
+
 process.on('uncaughtException', (err) => {
   logger.fatal(err, 'Uncaught exception.');
 
