@@ -107,10 +107,17 @@ async function deleteUser(id) {
   return true;
 }
 
+async function isEmailTaken(email) {
+  // Panggil fungsi dari repository untuk memeriksa apakah email sudah terdaftar
+  const emailExists = await userRepository.checkEmailExistence(email);
+  return emailExists;
+}
+
 module.exports = {
   getUsers,
   getUser,
   createUser,
   updateUser,
   deleteUser,
+  isEmailTaken,
 };

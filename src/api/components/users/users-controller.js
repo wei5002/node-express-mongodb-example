@@ -51,15 +51,15 @@ async function createUser(request, response, next) {
     const email = request.body.email;
     const password = request.body.password;
 
-    const success = await usersService.createUser(name, email, password);
-    if (!success) {
+    const success = await usersService.isEmailTaken(email);
+    if (emailTaken) {
       throw errorResponder(
-        errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to create user'
+        errorTypes.EMAIL_ALREADY_TAKEN,
+        'Email alrady taken'
       );
     }
 
-    return response.status(200).json({ name, email });
+    // return response.status(200).json({ name, email });
   } catch (error) {
     return next(error);
   }
@@ -78,15 +78,15 @@ async function updateUser(request, response, next) {
     const name = request.body.name;
     const email = request.body.email;
 
-    const success = await usersService.updateUser(id, name, email);
-    if (!success) {
+    const success = await usersService.isEmailTaken(email);
+    if (emailTaken) {
       throw errorResponder(
-        errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to update user'
+        errorTypes.EMAIL_ALREADY_TAKEN,
+        'Email already tekan'
       );
     }
 
-    return response.status(200).json({ id });
+    // return response.status(200).json({ id });
   } catch (error) {
     return next(error);
   }

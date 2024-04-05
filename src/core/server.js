@@ -85,4 +85,16 @@ app.use((error, request, response, next) =>
   })
 );
 
+app.use((error,request,response,next)=>{
+  //menamnganin error 409 (Email already taken)
+  if(error.code === errorTypes.EMAIL_ALREADY_TAKEN){
+    return response.status(409).json({
+      statusCode:409,
+      error : error.code,
+      description: error.description||'Email already taken',
+    });
+  }
+  //lanjutkan menangani jenis error lainnya 
+});
+
 module.exports = app;
