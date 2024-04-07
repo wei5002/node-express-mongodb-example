@@ -49,12 +49,12 @@ async function getUser(id) {
  * @param {string} password - Password
  * @returns {boolean}
  */
-async function createUser(name, email, password) {
+async function createUser(name, email, password, passwordConfirm) {
   // Hash password
   const hashedPassword = await hashPassword(password);
 
   try {
-    await usersRepository.createUser(name, email, hashedPassword);
+    await usersRepository.createUser(name, email, hashedPassword, passwordConfirm);
   } catch (err) {
     return null;
   }
