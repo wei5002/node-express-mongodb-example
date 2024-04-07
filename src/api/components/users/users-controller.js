@@ -1,5 +1,6 @@
 const usersService = require('./users-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
+const { isEmailRegistered } = require('./users-service');
 
 /**
  * Handle get list of users request
@@ -51,15 +52,23 @@ async function createUser(request, response, next) {
     const email = request.body.email;
     const password = request.body.password;
 
-    const success = await usersService.isEmailTaken(email);
-    if (emailTaken) {
+    const emailRegistered = await usersService.isEmailRegistered(email);
+    if (emailRegistered) {
       throw errorResponder(
         errorTypes.EMAIL_ALREADY_TAKEN,
-        'Email alrady taken'
+        'Email already taken'
       );
     }
 
-    // return response.status(200).json({ name, email });
+    const success = await usersService.createUser(name, email, password);
+    if (!success) {
+      throw errorResponder(
+        errorTypes.UNPROCESSABLE_ENTITY,
+        'Failed to create user'
+      );
+    }
+
+    return response.status(200).json({ name, email });
   } catch (error) {
     return next(error);
   }
@@ -78,15 +87,23 @@ async function updateUser(request, response, next) {
     const name = request.body.name;
     const email = request.body.email;
 
-    const success = await usersService.isEmailTaken(email);
-    if (emailTaken) {
+    const emailRegistered = await usersService.isEmailRegistered(email);
+    if (emailRegistered) {
       throw errorResponder(
         errorTypes.EMAIL_ALREADY_TAKEN,
-        'Email already tekan'
+        'Email already taken'
       );
     }
 
-    // return response.status(200).json({ id });
+    const success = await usersService.updateUser(id, name, email);
+    if (!success) {
+      throw errorResponder(
+        errorTypes.UNPROCESSABLE_ENTITY,
+        'Failed to update user'
+      );
+    }
+
+    return response.status(200).json({ id });
   } catch (error) {
     return next(error);
   }

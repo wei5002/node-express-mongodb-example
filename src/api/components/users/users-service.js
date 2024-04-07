@@ -1,5 +1,6 @@
 const usersRepository = require('./users-repository');
 const { hashPassword } = require('../../../utils/password');
+const {errorResponder} = require('../../../core/errors')
 
 /**
  * Get list of users
@@ -107,10 +108,14 @@ async function deleteUser(id) {
   return true;
 }
 
-async function isEmailTaken(email) {
-  // Panggil fungsi dari repository untuk memeriksa apakah email sudah terdaftar
-  const emailExists = await userRepository.checkEmailExistence(email);
-  return emailExists;
+async function isEmailRegistered(email){
+  const users = await usersRepository.getUsers();
+  for ( let i = 0; i < users.length; i++){
+    if (users[i].email === email){
+      return true;
+    }
+  }
+  return false;
 }
 
 module.exports = {
@@ -119,5 +124,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  isEmailTaken,
+  isEmailRegistered,
 };
