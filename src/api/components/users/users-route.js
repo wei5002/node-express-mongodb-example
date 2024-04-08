@@ -34,4 +34,11 @@ module.exports = (app) => {
 
   // Delete user
   route.delete('/:id', authenticationMiddleware, usersControllers.deleteUser);
+
+  route.patch(
+    '/:id/changePassword',
+    authenticationMiddleware,
+    celebrate(usersValidator.changePassword),
+    usersControllers.changePassword
+  );
 };

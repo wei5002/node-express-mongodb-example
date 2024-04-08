@@ -1,4 +1,5 @@
 const { User } = require('../../../models');
+// const { password } = require('../../../models/users-schema');
 
 /**
  * Get a list of users
@@ -63,10 +64,44 @@ async function deleteUser(id) {
   return User.deleteOne({ _id: id });
 }
 
+/**
+ * change password match 
+ * @param {string} newPassword- new password
+ * @param {string} hashedPassword -hashed Password
+ * @returns {boolean}
+ */
+async function passwordMatched( password, hashedPassword){
+  const bcrypt = require('bcrypt');
+  return await bcrypt.compare(password, hashedPassword);
+}
+
+/**
+ * Change password
+ * @param {string} id - ID
+ * @param {string} newPassword -New Password
+ * @returns {Promise}
+ */
+
+async function changePassword(id, newPassword){
+  try{
+    const user = await User.findByIdAndUpdate(id ,{ password: newPassword});
+
+    if(user){
+      return true;
+    }else{
+      return false;
+    }
+  }catch(error){
+    throw error;
+  }
+}
+
 module.exports = {
   getUsers,
   getUser,
   createUser,
   updateUser,
   deleteUser,
+  passwordMatched,
+  changePassword,
 };
