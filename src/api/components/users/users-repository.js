@@ -65,12 +65,12 @@ async function deleteUser(id) {
 }
 
 /**
- * change password match 
+ * change password match
  * @param {string} newPassword- new password
  * @param {string} hashedPassword -hashed Password
  * @returns {boolean}
  */
-async function passwordMatched( password, hashedPassword){
+async function passwordMatched(password, hashedPassword) {
   const bcrypt = require('bcrypt');
   return await bcrypt.compare(password, hashedPassword);
 }
@@ -82,16 +82,16 @@ async function passwordMatched( password, hashedPassword){
  * @returns {Promise}
  */
 
-async function changePassword(id, newPassword){
-  try{
-    const user = await User.findByIdAndUpdate(id ,{ password: newPassword});
+async function changePassword(id, newPassword) {
+  try {
+    const user = await User.findByIdAndUpdate(id, { password: newPassword });
 
-    if(user){
+    if (user) {
       return true;
-    }else{
+    } else {
       return false;
     }
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 }

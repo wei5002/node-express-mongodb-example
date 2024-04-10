@@ -111,7 +111,7 @@ async function updateUser(request, response, next) {
       );
     }
 
-    return response.status(200).json({ id });
+    return response.status(200).json({ message:'success to update user' });
   } catch (error) {
     return next(error);
   }
